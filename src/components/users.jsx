@@ -2,62 +2,68 @@ import { useState } from 'react';
 
 import api from '../api';
 
-import TableHead from './table/tableHead';
-import TableDataRow from './table/tableDataRow';
-
 const Users = () => {
   const [users, setUsers] = useState(api.users.fetchAll());
 
-  const deleteRecord = (id) => {
-    setUsers((prevState) => prevState.filter((user) => user._id !== id));
+  const handleDelete = (userId) => {
+    setUsers(users.filter((user) => user._id !== userId));
   };
 
-  const getEnding = (num) => {
-    const last = num.toString().slice(-1);
-
-    if (num === 1) {
-      return { nounEnding: '', verbEnding: 'ет' };
-    }
-
-    if (last === '2' || last === '3' || last === '4') {
-      return { nounEnding: 'а', verbEnding: 'ут' };
-    }
-
-    return { nounEnding: '', verbEnding: 'ут' };
+  const renderPhrase = (number) => {
+    const lastOne = Number(number.toString().slice(-1));
+    if (number > 4 && number < 15) return 'человек тусанет';
+    if ([2, 3, 4].indexOf(lastOne) >= 0) return 'человека тусанут';
+    if (lastOne === 1) return 'человек тусанет';
+    return 'человек тусанет';
   };
 
-  const getPhrase = (num) => {
-    const { nounEnding, verbEnding } = getEnding(num);
-
-    return `${num} человек${nounEnding} тусан${verbEnding} с тобой сегодня!`;
-  };
-
-  return users.length ? (
+  return (
     <>
-      <div className='badge bg-primary'>{getPhrase(users.length)}</div>
-      <table className='table'>
-        <thead>{<TableHead />}</thead>
-        <tbody>
-          {users.map((user) => {
-            const { _id, name, qualities, profession, completedMeetings, rate } = user;
-            return (
-              <TableDataRow
-                key={_id}
-                id={_id}
-                name={name}
-                qualities={qualities}
-                profession={profession.name}
-                completedMeetings={completedMeetings}
-                rate={rate}
-                deleteRecord={deleteRecord}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+      <h2>
+        <span className={'badge ' + (users.length > 0 ? 'bg-primary' : 'bg-danger')}>
+          {users.length > 0
+            ? `${users.length + ' ' + renderPhrase(users.length)} с тобой сегодня`
+            : 'Никто с тобой не тусанет'}
+        </span>
+      </h2>
+
+      {users.length > 0 && (
+        <table className='table'>
+          <thead>
+            <tr>
+              <th scope='col'>Имя</th>
+              <th scope='col'>Качества</th>
+              <th scope='col'>Профессия</th>
+              <th scope='col'>Встретился, раз</th>
+              <th scope='col'>Оценка</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>
+                  {user.qualities.map((item) => (
+                    <span className={'badge m-1 bg-' + item.color} key={item._id}>
+                      {item.name}
+                    </span>
+                  ))}
+                </td>
+                <td>{user.profession.name}</td>
+                <td>{user.completedMeetings}</td>
+                <td>{user.rate} /5</td>
+                <td>
+                  <button onClick={() => handleDelete(user._id)} className='btn btn-danger'>
+                    delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
-  ) : (
-    <div className='badge bg-danger'>Никто с тобой не тусанет!</div>
   );
 };
 
