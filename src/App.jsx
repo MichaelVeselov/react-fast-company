@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import api from './api';
 
-import Users from './components/Users';
+import Users from './components/Users.jsx';
 import SearchStatus from './components/SearchStatus';
 
 const initialState = api.users.fetchAll().map((item) => {
