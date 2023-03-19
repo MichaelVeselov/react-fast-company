@@ -9,9 +9,9 @@ const User = (props) => {
     profession = {},
     completedMeetings = '',
     rate = '',
-    favorite = false,
+    bookmark = false,
     onDelete = Function.prototype,
-    onChange = Function.prototype,
+    onToggleBookmark = Function.prototype,
   } = props;
 
   return (
@@ -25,7 +25,9 @@ const User = (props) => {
       <td>{profession.name}</td>
       <td>{completedMeetings}</td>
       <td>{rate} /5</td>
-      <td>{<BookMark status={favorite} onChange={() => onChange(_id)} />}</td>
+      <td>
+        {<BookMark status={bookmark} onClick={() => onToggleBookmark(_id)} />}
+      </td>
       <td>
         <button onClick={() => onDelete(_id)} className='btn btn-danger'>
           Delete

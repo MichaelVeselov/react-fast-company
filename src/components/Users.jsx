@@ -1,7 +1,7 @@
 import User from './User';
 
 const Users = (props) => {
-  const { users = [], onDelete = Function.prototype, onChange = Function.prototype } = props;
+  const { users = [], ...rest } = props;
 
   return (
     <>
@@ -20,7 +20,7 @@ const Users = (props) => {
           </thead>
           <tbody>
             {users.map((user) => (
-              <User key={user._id} {...user} onDelete={onDelete} onChange={onChange} />
+              <User key={user._id} {...user} {...rest} />
             ))}
           </tbody>
         </table>

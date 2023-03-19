@@ -1,10 +1,14 @@
 const BookMark = (props) => {
-  const { status = false, onChange = Function.prototype } = props;
+  const { status = false, onClick = Function.prototype } = props;
 
   return status ? (
-    <i className='bi bi-bookmark' style={{ cursor: 'pointer' }} onClick={onChange}></i>
+    <button>
+      <i className='bi bi-bookmark-heart-fill' onClick={onClick}></i>
+    </button>
   ) : (
-    <i className='bi bi-bookmark-fill' style={{ cursor: 'pointer' }} onClick={onChange}></i>
+    <button>
+      <i className='bi bi-bookmark' onClick={onClick}></i>
+    </button>
   );
 };
 

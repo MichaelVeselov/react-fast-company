@@ -7,9 +7,7 @@ import api from './api';
 import Users from './components/Users.jsx';
 import SearchStatus from './components/SearchStatus';
 
-const initialState = api.users.fetchAll().map((item) => {
-  return { ...item, favorite: false };
-});
+const initialState = api.users.fetchAll();
 
 function App() {
   const [users, setUsers] = useState(initialState);
@@ -18,11 +16,11 @@ function App() {
     setUsers(users.filter((user) => user._id !== userId));
   };
 
-  const handleChange = (userId) => {
+  const handleToggleBookmark = (userId) => {
     setUsers(
       users.map((user) => {
         if (user._id === userId) {
-          return { ...user, favorite: !user.favorite };
+          return { ...user, bookmark: !user.bookmark };
         } else {
           return user;
         }
@@ -33,7 +31,11 @@ function App() {
   return (
     <>
       <SearchStatus length={users.length} />
-      <Users users={users} onDelete={handleDelete} onChange={handleChange} />
+      <Users
+        users={users}
+        onDelete={handleDelete}
+        onToggleBookmark={handleToggleBookmark}
+      />
     </>
   );
 }
