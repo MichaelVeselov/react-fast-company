@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
+
 const SearchStatus = (props) => {
-  const { length = 0 } = props;
+  const { length } = props;
 
   const renderPhrase = (number) => {
     const lastOne = Number(number.toString().slice(-1));
@@ -12,10 +14,16 @@ const SearchStatus = (props) => {
   return (
     <h2>
       <span className={'badge ' + (length > 0 ? 'bg-primary' : 'bg-danger')}>
-        {length > 0 ? `${length + ' ' + renderPhrase(length)} с тобой сегодня` : 'Никто с тобой не тусанет'}
+        {length > 0
+          ? `${length + ' ' + renderPhrase(length)} с тобой сегодня`
+          : 'Никто с тобой не тусанет'}
       </span>
     </h2>
   );
+};
+
+SearchStatus.propTypes = {
+  length: PropTypes.number.isRequired,
 };
 
 export default SearchStatus;
