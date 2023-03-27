@@ -14,7 +14,7 @@ const Pagination = (props) => {
     <nav>
       <ul className='pagination justify-content-center'>
         {pages.map((page) => {
-          const activeClass = page === currentPage ? ' active' : '';
+          const activeClass = page === currentPage ? 'active' : '';
           return (
             <li className={`page-item ${activeClass}`} key={`page_${page}`}>
               <button className='page-link' onClick={() => onPageChange(page)}>
