@@ -8,7 +8,7 @@ import api from '../api';
 
 import SearchStatus from './SearchStatus';
 import GroupList from './GroupList';
-import UserTable from './Usertable';
+import UserTable from './UserTable';
 import Pagination from './Pagination';
 
 const Users = () => {
