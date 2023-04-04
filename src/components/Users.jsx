@@ -79,8 +79,7 @@ const Users = () => {
 
     const sortedUsers = orderBy(
       filteredUsers,
-      //[sortBy.path, 'name'],
-      [sortBy.path],
+      [sortBy.path, 'name'],
       [sortBy.order]
     );
 
