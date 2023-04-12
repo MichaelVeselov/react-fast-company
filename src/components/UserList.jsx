@@ -11,7 +11,7 @@ import GroupList from './GroupList';
 import UserTable from './UserTable';
 import Pagination from './Pagination';
 
-const Users = () => {
+const UserList = () => {
   const [professions, setProfessions] = useState([]);
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
@@ -128,7 +128,7 @@ const Users = () => {
       </div>
     );
   }
-  return 'loading...';
+  return <h2>Loading...</h2>;
 };
 
-export default Users;
+export default UserList;
