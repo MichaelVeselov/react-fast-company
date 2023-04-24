@@ -7,6 +7,7 @@ import { paginate } from '../utils/paginate';
 import api from '../api';
 
 import SearchStatus from './SearchStatus';
+import Search from './Search';
 import GroupList from './GroupList';
 import UserTable from './UserTable';
 import Pagination from './Pagination';
@@ -18,6 +19,7 @@ const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState('');
 
   const pageSize = 6;
 
@@ -43,6 +45,14 @@ const UserList = () => {
     setUsers(users.filter((user) => user._id !== userId));
   };
 
+  const handleSearch = (event) => {
+    if (selectedProfession) {
+      clearFilter();
+    }
+    const value = event.target.value;
+    setSearch(value);
+  };
+
   const handleToggleBookmark = (userId) => {
     setUsers(
       users.map((user) => {
@@ -56,6 +66,7 @@ const UserList = () => {
   };
 
   const handleProfessionSelect = (item) => {
+    clearSearch();
     setSelectedProfession(item);
   };
 
@@ -72,10 +83,14 @@ const UserList = () => {
     setSelectedProfession(null);
   };
 
+  const clearSearch = () => {
+    setSearch('');
+  };
+
   if (users.length) {
     const filteredUsers = selectedProfession
       ? users.filter((user) => isEqual(user.profession, selectedProfession))
-      : users;
+      : users.filter((user) => user.name.includes(search));
 
     const sortedUsers = orderBy(
       filteredUsers,
@@ -83,9 +98,11 @@ const UserList = () => {
       [sortBy.order]
     );
 
-    const userCount = filteredUsers.length;
+    const userCount = sortedUsers.length;
 
-    if (currentPage > Math.ceil(userCount / pageSize)) {
+    const pageNumber = Math.ceil(userCount / pageSize) || 1;
+
+    if (currentPage > pageNumber) {
       setCurrentPage((currentPage) => currentPage - 1);
     }
 
@@ -107,6 +124,7 @@ const UserList = () => {
         )}
         <div className='d-flex flex-column'>
           <SearchStatus length={userCount} />
+          <Search search={search} onSearch={handleSearch} />
           {userCount > 0 && (
             <UserTable
               users={userCrop}
