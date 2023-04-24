@@ -102,9 +102,9 @@ const UserList = () => {
 
     const userCount = sortedUsers.length;
 
-    const pageNumber = Math.ceil(userCount / pageSize) || 1;
+    const pageNumber = Math.ceil(userCount / pageSize);
 
-    if (currentPage > pageNumber) {
+    if (currentPage > pageNumber && currentPage > 1) {
       setCurrentPage((currentPage) => currentPage - 1);
     }
 
