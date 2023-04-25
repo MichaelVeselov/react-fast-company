@@ -11,6 +11,11 @@ const TextField = (props) => {
     setShowPassword((prevState) => !prevState);
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    onChange({ name: name, value: value });
+  };
+
   return (
     <div className='mb-4'>
       <label htmlFor={name}>{label}</label>
@@ -21,7 +26,7 @@ const TextField = (props) => {
           id={name}
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
         />
         {type === 'password' && (
           <button

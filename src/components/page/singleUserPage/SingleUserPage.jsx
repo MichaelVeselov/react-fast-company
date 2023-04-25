@@ -17,7 +17,8 @@ const SingleUserPage = (props) => {
       setUser(data);
       setLoading(false);
     });
-  }, [userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const content = !user || loading ? <h2>Loading</h2> : <View user={user} />;
 

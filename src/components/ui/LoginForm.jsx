@@ -1,12 +1,36 @@
 import { useState, useEffect } from 'react';
 
+//import * as yup from 'yup';
+
 import { validator } from '../../utils/validator';
 
 import TextField from '../common/form/TextField';
+import CheckBoxField from '../common/form/CheckBoxField';
 
 const LoginForm = () => {
-  const [data, setData] = useState({ email: '', password: '' });
+  const [data, setData] = useState({ email: '', password: '', stayOn: false });
   const [errors, setErrors] = useState({});
+
+  /*   const validateSchema = yup.object().shape({
+    password: yup
+      .string()
+      .required('Password is required')
+      .matches(
+        /(?=.*[A-Z])/,
+        'Password must contain at least one capital letter'
+      )
+      .matches(/(?=.*[0-9])/, 'Password must contain at least one digit')
+      .matches(
+        /(?=.*[!@#$%^&*])/,
+        'Password must contain at least one special character !@#$%^&*'
+      )
+      .matches(/(?=.{8,})/, 'Password must be at least 8 characters long'),
+
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Email is not valid'),
+  }); */
 
   const validatorConfig = {
     email: {
@@ -28,8 +52,8 @@ const LoginForm = () => {
     },
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (target) => {
+    const { name, value } = target;
     setData((prevState) => ({ ...prevState, [name]: value }));
   };
 
@@ -44,10 +68,12 @@ const LoginForm = () => {
   };
 
   const validate = () => {
+    /*     validateSchema
+      .validate(data)
+      .then(() => setErrors({}))
+      .catch((error) => setErrors({ [error.path]: error.message })); */
     const errors = validator(data, validatorConfig);
-
     setErrors(errors);
-
     return Object.keys(errors).length === 0;
   };
 
@@ -59,37 +85,36 @@ const LoginForm = () => {
   }, [data]);
 
   return (
-    <div className='container mt-5'>
-      <div className='row'>
-        <div className='col-md-6 offset-md-3 shadow p-4'>
-          <h3 className='mb-4'>Login</h3>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              label='Email'
-              name='email'
-              value={data.email}
-              onChange={handleChange}
-              error={errors.email}
-            />
-            <TextField
-              label='Password'
-              type='password'
-              name='password'
-              value={data.password}
-              onChange={handleChange}
-              error={errors.password}
-            />
-            <button
-              type='submit'
-              className='btn btn-primary w-100 mx-auto'
-              disabled={!isValid}
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <TextField
+        label='Email'
+        name='email'
+        value={data.email}
+        onChange={handleChange}
+        error={errors.email}
+      />
+
+      <TextField
+        label='Password'
+        type='password'
+        name='password'
+        value={data.password}
+        onChange={handleChange}
+        error={errors.password}
+      />
+
+      <CheckBoxField value={data.stayOn} onChange={handleChange} name='stayOn'>
+        Stay on the system?
+      </CheckBoxField>
+
+      <button
+        type='submit'
+        className='btn btn-primary w-100 mx-auto'
+        disabled={!isValid}
+      >
+        Submit
+      </button>
+    </form>
   );
 };
 
