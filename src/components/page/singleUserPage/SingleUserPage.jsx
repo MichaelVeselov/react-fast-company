@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import api from '../api';
+import api from '../../../api';
 
-import Quality from './Qualitiy';
+import Qualities from '../../ui/qualities';
 
-const SingleUser = (props) => {
+const SingleUserPage = (props) => {
   const { userId } = props;
 
   const [user, setUser] = useState();
@@ -40,9 +40,7 @@ const View = ({ user }) => {
           </p>
           <p className='card-text'>
             <span className='fw-bolder'>Качества:</span>
-            {qualities.map((item) => (
-              <Quality key={item._id} {...item} />
-            ))}
+            {<Qualities qualities={qualities} />}
           </p>
           <p className='card-text'>
             <span className='fw-bolder'>Встретился, раз:</span>{' '}
@@ -65,8 +63,8 @@ const View = ({ user }) => {
   );
 };
 
-SingleUser.propTypes = {
+SingleUserPage.propTypes = {
   userId: PropTypes.string,
 };
 
-export default SingleUser;
+export default SingleUserPage;

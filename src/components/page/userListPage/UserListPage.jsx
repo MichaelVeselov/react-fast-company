@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 
 import { isEqual, orderBy } from 'lodash';
 
-import { paginate } from '../utils/paginate';
+import { paginate } from '../../../utils/paginate';
 
-import api from '../api';
+import api from '../../../api';
 
-import SearchStatus from './SearchStatus';
-import Search from './Search';
-import GroupList from './GroupList';
-import UserTable from './UserTable';
-import Pagination from './Pagination';
+import SearchStatus from '../../ui/SearchStatus';
+import Search from '../../ui/Search';
+import GroupList from '../../common/GroupList';
+import UserTable from '../../ui/UserTable';
+import Pagination from '../../common/Pagination';
 
-const UserList = () => {
+const UserListPage = () => {
   const [professions, setProfessions] = useState([]);
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
@@ -151,4 +151,4 @@ const UserList = () => {
   return <h2>Loading...</h2>;
 };
 
-export default UserList;
+export default UserListPage;

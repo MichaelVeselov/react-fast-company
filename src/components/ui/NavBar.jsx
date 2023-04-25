@@ -18,7 +18,7 @@ const NavBar = () => {
       </li>
       <li className='nav-item'>
         <NavLink to='/users' className={navLinkClasses()}>
-          Users Page
+          Users
         </NavLink>
       </li>
     </ul>

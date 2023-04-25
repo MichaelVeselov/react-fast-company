@@ -1,6 +1,6 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import NavBar from './components/NavBar';
+import NavBar from './components/ui/NavBar';
 import MainPage from './layouts/MainPage';
 import LoginPage from './layouts/LoginPage';
 import Users from './layouts/Users';

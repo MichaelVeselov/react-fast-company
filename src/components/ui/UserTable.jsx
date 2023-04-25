@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import BookMark from './BookMark';
-import QuaityList from './QuaityList';
+import BookMark from '../common/BookMark';
+import Qualities from './qualities';
 
-import Table from './Table';
+import Table from '../common/table';
 
 const UserTable = (props) => {
   const { users, onSort, selectedSort, onToggleBookmark, onDelete } = props;
@@ -18,7 +18,7 @@ const UserTable = (props) => {
     },
     qualities: {
       name: 'Качества',
-      component: (user) => <QuaityList qualities={user.qualities} />,
+      component: (user) => <Qualities qualities={user.qualities} />,
     },
     professions: {
       path: 'profession.name',
