@@ -26,7 +26,7 @@ const SingleUserPage = (props) => {
 };
 
 const View = ({ user }) => {
-  const { name, profession, qualities, completedMeetings, rate } = user;
+  const { _id, name, profession, qualities, completedMeetings, rate } = user;
   const history = useHistory();
 
   return (
@@ -55,10 +55,10 @@ const View = ({ user }) => {
       <button
         className='btn btn-primary'
         onClick={() => {
-          history.replace('/users');
+          history.push(`/users/${_id}/edit`);
         }}
       >
-        Все пользователи
+        Edit user
       </button>
     </>
   );

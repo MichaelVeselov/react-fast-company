@@ -25,6 +25,7 @@ const RegisterForm = () => {
   const [qualities, setQualities] = useState({});
 
   useEffect(() => {
+    setLoading(true);
     api.professions.fetchAll().then((data) => {
       setProfessions(data);
       setLoading(false);
@@ -32,6 +33,7 @@ const RegisterForm = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     api.qualities.fetchAll().then((data) => {
       setQualities(data);
       setLoading(false);

@@ -14,7 +14,7 @@ function App() {
         <Switch>
           <Route path='/' component={MainPage} exact />
           <Route path='/login/:type?' component={LoginPage} />
-          <Route path='/users/:userId?' component={Users} />
+          <Route path='/users/:userId?/:edit?' component={Users} />
           <Route path='/404' component={NotFoundPage} />
           <Redirect to='/404' />
         </Switch>

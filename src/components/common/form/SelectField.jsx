@@ -23,7 +23,7 @@ const SelectField = (props) => {
         {label}
       </label>
       <select
-        className={error ? 'form-select is-invalid' : 'form-control'}
+        className={error ? 'form-select is-invalid' : 'form-select'}
         id={name}
         name={name}
         value={value}
