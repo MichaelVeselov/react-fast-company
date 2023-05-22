@@ -12,6 +12,8 @@ import SelectField from '../../common/form/SelectField';
 import RadioField from '../../common/form/RadioField';
 import MultiSelectField from '../../common/form/MultiSelectField';
 
+import BackHistoryButton from '../../common/BackHistoryButton';
+
 const EditUserPage = (props) => {
   const { userId } = props;
   const history = useHistory();
@@ -137,6 +139,11 @@ const EditUserPage = (props) => {
     <h2>Loading...</h2>
   ) : (
     <div className='container mt-5'>
+      <div className='row'>
+        <div className='col-md-6 offset-md-3 shadow p-4 mb-3'>
+          <BackHistoryButton />
+        </div>
+      </div>
       <div className='row'>
         <div className='col-md-6 offset-md-3 shadow p-4'>
           <form onSubmit={handleSubmit}>

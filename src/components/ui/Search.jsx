@@ -12,6 +12,7 @@ const Search = (props) => {
         value={search}
         onChange={onSearch}
         autoFocus
+        autoComplete='off'
       />
     </div>
   );

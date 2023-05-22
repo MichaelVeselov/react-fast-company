@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 import api from '../../../api';
 
-import Qualities from '../../ui/qualities';
+import SingleUserCard from '../../ui/SingleUserCard';
+import QualityCard from '../../ui/QualityCard';
+import MeetingCard from '../../ui/MeetingCard';
+import Comments from '../../ui/Comments';
 
 const SingleUserPage = (props) => {
   const { userId } = props;
@@ -26,41 +29,22 @@ const SingleUserPage = (props) => {
 };
 
 const View = ({ user }) => {
-  const { _id, name, profession, qualities, completedMeetings, rate } = user;
-  const history = useHistory();
+  const { qualities, completedMeetings } = user;
 
   return (
-    <>
-      <div className='card mb-3' style={{ width: '25rem' }}>
-        <div className='card-body'>
-          <h5 className='card-title'>
-            <span className='fw-bolder'>Имя:</span> {name}
-          </h5>
-          <p className='card-text'>
-            <span className='fw-bolder'>Профессия:</span> {profession.name}
-          </p>
-          <p className='card-text'>
-            <span className='fw-bolder'>Качества:</span>
-            {<Qualities qualities={qualities} />}
-          </p>
-          <p className='card-text'>
-            <span className='fw-bolder'>Встретился, раз:</span>{' '}
-            {completedMeetings}
-          </p>
-          <p className='card-text'>
-            <span className='fw-bolder'>Оценка:</span> {rate}
-          </p>
+    <div className='container'>
+      <div className='row gutters-sm'>
+        <div className='col-md-4 mb-3'>
+          <SingleUserCard user={user} />
+          <QualityCard data={qualities} />
+          <MeetingCard value={completedMeetings} />
+        </div>
+        <div className='col-md-8'>
+          <h3>Comments</h3>
+          <Comments />
         </div>
       </div>
-      <button
-        className='btn btn-primary'
-        onClick={() => {
-          history.push(`/users/${_id}/edit`);
-        }}
-      >
-        Edit user
-      </button>
-    </>
+    </div>
   );
 };
 
