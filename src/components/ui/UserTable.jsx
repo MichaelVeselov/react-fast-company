@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import BookMark from '../common/BookMark';
 import Qualities from './qualities';
+import Profession from './Profession';
 
 import Table from '../common/table';
 
@@ -17,12 +18,14 @@ const UserTable = (props) => {
       component: (user) => <Link to={`/users/${user._id}`}>{user.name}</Link>,
     },
     qualities: {
+      path: 'quality',
       name: 'Качества',
       component: (user) => <Qualities qualities={user.qualities} />,
     },
     professions: {
-      path: 'profession.name',
+      path: 'profession',
       name: 'Профессия',
+      component: (user) => <Profession id={user.profession} />,
     },
     completedMeetings: {
       path: 'completedMeetings',

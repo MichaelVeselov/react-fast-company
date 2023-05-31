@@ -15,7 +15,7 @@ const BookMark = (props) => {
 };
 
 BookMark.propTypes = {
-  status: PropTypes.bool.isRequired,
+  // status: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
