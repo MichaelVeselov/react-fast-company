@@ -7,10 +7,22 @@ function QuaityList(props) {
   const { qualities } = props;
   const { isLoading } = useQuality();
 
+  const transfromQualities = (array) => {
+    return array.map((item) => {
+      if (typeof item === 'object') {
+        return item._id;
+      } else {
+        return item;
+      }
+    });
+  };
+
   return (
     <>
       {!isLoading
-        ? qualities.map((item) => <Quality key={item} id={item} />)
+        ? transfromQualities(qualities).map((item) => (
+            <Quality key={item} id={item} />
+          ))
         : 'Loading...'}
     </>
   );

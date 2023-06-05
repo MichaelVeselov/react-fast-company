@@ -39,7 +39,6 @@ const UserListPage = () => {
   }, [selectedProfession]);
 
   const handleDelete = (userId) => {
-    //setUsers(users.filter((user) => user._id !== userId));
     console.log(userId);
   };
 
@@ -52,15 +51,6 @@ const UserListPage = () => {
   };
 
   const handleToggleBookmark = (userId) => {
-    /* setUsers(
-      users.map((user) => {
-        if (user._id === userId) {
-          return { ...user, bookmark: !user.bookmark };
-        } else {
-          return user;
-        }
-      })
-    ); */
     const newUserArray = users.map((user) => {
       if (user._id === userId) {
         return { ...user, bookmark: !user.bookmark };
@@ -93,9 +83,9 @@ const UserListPage = () => {
     setSearch('');
   };
 
-  if (users.length) {
+  if (users?.length) {
     const filteredUsers = selectedProfession
-      ? users.filter((user) => isEqual(user.profession, selectedProfession))
+      ? users.filter((user) => isEqual(user.profession, selectedProfession._id))
       : users.filter((user) =>
           user.name.toLowerCase().includes(search.toLowerCase())
         );
