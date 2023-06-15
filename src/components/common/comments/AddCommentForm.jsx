@@ -61,7 +61,7 @@ const AddCommentForm = (props) => {
   };
 
   const arrayOfUsers =
-    users && users.map((user) => ({ name: user.name, _id: user._id }));
+    users && users.map((user) => ({ label: user.name, value: user._id }));
 
   return (
     <div>

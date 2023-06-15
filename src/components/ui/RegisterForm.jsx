@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-
-import api from '../../api';
+import { useHistory } from 'react-router-dom';
 
 import { validator } from '../../utils/validator';
+
+import { useQuality } from '../../hooks/useQuality';
+import { useProfession } from '../../hooks/useProfession';
+import { useAuth } from '../../hooks/useAuth';
 
 import TextField from '../common/form/TextField';
 import SelectField from '../common/form/SelectField';
@@ -20,25 +23,23 @@ const RegisterForm = () => {
     license: false,
   });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [professions, setProfessions] = useState([]);
-  const [qualities, setQualities] = useState({});
 
-  useEffect(() => {
-    setLoading(true);
-    api.professions.fetchAll().then((data) => {
-      setProfessions(data);
-      setLoading(false);
-    });
-  }, []);
+  const history = useHistory();
 
-  useEffect(() => {
-    setLoading(true);
-    api.qualities.fetchAll().then((data) => {
-      setQualities(data);
-      setLoading(false);
-    });
-  }, []);
+  const { signUp } = useAuth();
+
+  const { qualities } = useQuality();
+  const { professions, isLoading } = useProfession();
+
+  const qualityList = qualities.map((item) => ({
+    label: item.name,
+    value: item._id,
+  }));
+
+  const professionList = professions.map((item) => ({
+    label: item.name,
+    value: item._id,
+  }));
 
   const validatorConfig = {
     email: {
@@ -72,14 +73,24 @@ const RegisterForm = () => {
     setData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const isValid = validate();
 
     if (!isValid) return;
 
-    console.log(data);
+    const newData = {
+      ...data,
+      qualities: data.qualities.map((item) => item.value),
+    };
+
+    try {
+      await signUp(newData);
+      history.push('/');
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   const validate = () => {
@@ -122,8 +133,8 @@ const RegisterForm = () => {
         onChange={handleChange}
         defaultOption='Choose...'
         name='profession'
-        loading={loading}
-        options={professions}
+        loading={isLoading}
+        options={professionList}
         error={errors.profession}
       />
 
@@ -140,7 +151,7 @@ const RegisterForm = () => {
       />
 
       <MultiSelectField
-        options={qualities}
+        options={qualityList}
         onChange={handleChange}
         defaultValue={data.qualities}
         name='qualities'

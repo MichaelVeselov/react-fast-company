@@ -87,7 +87,7 @@ const UserListPage = () => {
     const filteredUsers = selectedProfession
       ? users.filter((user) => isEqual(user.profession, selectedProfession._id))
       : users.filter((user) =>
-          user.name.toLowerCase().includes(search.toLowerCase())
+          user.name?.toLowerCase().includes(search.toLowerCase())
         );
 
     const sortedUsers = orderBy(
