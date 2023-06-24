@@ -71,9 +71,11 @@ const LoginForm = () => {
 
     if (!isValid) return;
 
+    const redirect = history.location.state?.from.pathname || '/';
+
     try {
       await logIn(data);
-      history.push('/');
+      history.push(redirect);
     } catch (error) {
       setErrors(error);
     }

@@ -9,7 +9,7 @@ import Profession from './Profession';
 import Table from '../common/table';
 
 const UserTable = (props) => {
-  const { users, onSort, selectedSort, onToggleBookmark, onDelete } = props;
+  const { users, onSort, selectedSort, onToggleBookmark } = props;
 
   const columns = {
     name: {
@@ -45,13 +45,6 @@ const UserTable = (props) => {
         />
       ),
     },
-    delete: {
-      component: (user) => (
-        <button onClick={() => onDelete(user._id)} className='btn btn-danger'>
-          Delete
-        </button>
-      ),
-    },
   };
 
   return (
@@ -69,7 +62,6 @@ UserTable.propTypes = {
   onSort: PropTypes.func.isRequired,
   selectedSort: PropTypes.object.isRequired,
   onToggleBookmark: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default UserTable;

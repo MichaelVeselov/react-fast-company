@@ -4,9 +4,9 @@ import { isEqual, orderBy } from 'lodash';
 
 import { paginate } from '../../../utils/paginate';
 
-import api from '../../../api';
-
 import { useUser } from '../../../hooks/useUser';
+import { useProfession } from '../../../hooks/useProfession';
+import { useAuth } from '../../../hooks/useAuth';
 
 import SearchStatus from '../../ui/SearchStatus';
 import Search from '../../ui/Search';
@@ -15,11 +15,12 @@ import UserTable from '../../ui/UserTable';
 import Pagination from '../../common/Pagination';
 
 const UserListPage = () => {
-  const [professions, setProfessions] = useState([]);
   const [selectedProfession, setSelectedProfession] = useState(null);
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+
+  const { currentUser } = useAuth();
+  const { professions, isLoading: professionLoading } = useProfession();
 
   const [search, setSearch] = useState('');
 
@@ -28,19 +29,8 @@ const UserListPage = () => {
   const { users } = useUser();
 
   useEffect(() => {
-    api.professions.fetchAll().then((data) => {
-      setProfessions(data);
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
     setCurrentPage(1);
   }, [selectedProfession]);
-
-  const handleDelete = (userId) => {
-    console.log(userId);
-  };
 
   const handleSearch = (event) => {
     if (selectedProfession) {
@@ -91,7 +81,7 @@ const UserListPage = () => {
         );
 
     const sortedUsers = orderBy(
-      filteredUsers,
+      filteredUsers.filter((user) => user._id !== currentUser._id),
       [sortBy.path, 'name'],
       [sortBy.order]
     );
@@ -108,7 +98,7 @@ const UserListPage = () => {
 
     return (
       <div className='d-flex'>
-        {!loading && Object.keys(professions).length !== 0 && (
+        {!professionLoading && Object.keys(professions).length !== 0 && (
           <div className='d-flex flex-column flex-shrink-0 p-3'>
             <GroupList
               items={professions}
@@ -128,7 +118,6 @@ const UserListPage = () => {
               users={userCrop}
               onSort={handleSort}
               selectedSort={sortBy}
-              onDelete={handleDelete}
               onToggleBookmark={handleToggleBookmark}
             />
           )}

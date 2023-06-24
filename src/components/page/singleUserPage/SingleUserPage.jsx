@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
 
-import api from '../../../api';
+import { useUser } from '../../../hooks/useUser';
+import { CommentProvider } from '../../../hooks/useComment';
 
 import SingleUserCard from '../../ui/SingleUserCard';
 import QualityCard from '../../ui/QualityCard';
@@ -12,18 +11,11 @@ import Comments from '../../ui/Comments';
 const SingleUserPage = (props) => {
   const { userId } = props;
 
-  const [user, setUser] = useState();
-  const [loading, setLoading] = useState(true);
+  const { getUserById } = useUser();
 
-  useEffect(() => {
-    api.users.getById(userId).then((data) => {
-      setUser(data);
-      setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const user = getUserById(userId);
 
-  const content = !user || loading ? <h2>Loading</h2> : <View user={user} />;
+  const content = <View user={user} />;
 
   return <>{content}</>;
 };
@@ -41,7 +33,9 @@ const View = ({ user }) => {
         </div>
         <div className='col-md-8'>
           <h3>Comments</h3>
-          <Comments />
+          <CommentProvider>
+            <Comments />
+          </CommentProvider>
         </div>
       </div>
     </div>

@@ -7,10 +7,13 @@ import { ProfessionProvider } from './hooks/useProfession';
 import { QualityProvider } from './hooks/useQuality';
 import { AuthProvider } from './hooks/useAuth';
 
+import ProtectedRoute from './components/common/ProtectedRoute';
+
 import NavBar from './components/ui/NavBar';
 import MainPage from './layouts/MainPage';
 import LoginPage from './layouts/LoginPage';
 import Users from './layouts/Users';
+import LogOut from './layouts/LogOut';
 import NotFoundPage from './layouts/NotFoundPage';
 
 function App() {
@@ -24,7 +27,11 @@ function App() {
               <Switch>
                 <Route path='/' component={MainPage} exact />
                 <Route path='/login/:type?' component={LoginPage} />
-                <Route path='/users/:userId?/:edit?' component={Users} />
+                <Route path='/logout' component={LogOut} />
+                <ProtectedRoute
+                  path='/users/:userId?/:edit?'
+                  component={Users}
+                />
                 <Route path='/404' component={NotFoundPage} />
                 <Redirect to='/404' />
               </Switch>
