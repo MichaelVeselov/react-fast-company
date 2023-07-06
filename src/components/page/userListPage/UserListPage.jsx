@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import { isEqual, orderBy } from 'lodash';
 
 import { paginate } from '../../../utils/paginate';
 
+import {
+  getProfessions,
+  getProfessionsLoadingStatus,
+} from '../../../store/professions';
+
 import { useUser } from '../../../hooks/useUser';
-import { useProfession } from '../../../hooks/useProfession';
 import { useAuth } from '../../../hooks/useAuth';
 
 import SearchStatus from '../../ui/SearchStatus';
@@ -20,7 +25,10 @@ const UserListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { currentUser } = useAuth();
-  const { professions, isLoading: professionLoading } = useProfession();
+
+  //const { professions, isLoading: professionLoading } = useProfession();
+  const professions = useSelector(getProfessions());
+  const professionLoading = useSelector(getProfessionsLoadingStatus());
 
   const [search, setSearch] = useState('');
 

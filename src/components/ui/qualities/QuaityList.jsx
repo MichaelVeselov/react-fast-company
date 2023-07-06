@@ -1,28 +1,33 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import PropTypes from 'prop-types';
 
+import {
+  getQualitiesByIds,
+  getQualitiesLoadingStatus,
+  loadQualitiesList,
+} from '../../../store/qualities';
+
 import Quality from './Qualitiy';
-import { useQuality } from '../../../hooks/useQuality';
 
 function QuaityList(props) {
-  const { qualities } = props;
-  const { isLoading } = useQuality();
+  const dispatch = useDispatch();
 
-  const transfromQualities = (array) => {
-    return array.map((item) => {
-      if (typeof item === 'object') {
-        return item._id;
-      } else {
-        return item;
-      }
-    });
-  };
+  const { qualities } = props;
+
+  const isLoading = useSelector(getQualitiesLoadingStatus());
+  const qualitiesList = useSelector(getQualitiesByIds(qualities));
+
+  useEffect(() => {
+    dispatch(loadQualitiesList());
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
       {!isLoading
-        ? transfromQualities(qualities).map((item) => (
-            <Quality key={item} id={item} />
-          ))
+        ? qualitiesList.map((item) => <Quality key={item._id} {...item} />)
         : 'Loading...'}
     </>
   );

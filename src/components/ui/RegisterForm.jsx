@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { validator } from '../../utils/validator';
 
-import { useQuality } from '../../hooks/useQuality';
-import { useProfession } from '../../hooks/useProfession';
+import { getQualities } from '../../store/qualities';
+import {
+  getProfessions,
+  getProfessionsLoadingStatus,
+} from '../../store/professions';
+
 import { useAuth } from '../../hooks/useAuth';
 
 import TextField from '../common/form/TextField';
@@ -29,14 +34,14 @@ const RegisterForm = () => {
 
   const { signUp } = useAuth();
 
-  const { qualities } = useQuality();
-  const { professions, isLoading } = useProfession();
-
+  const qualities = useSelector(getQualities());
   const qualityList = qualities.map((item) => ({
     label: item.name,
     value: item._id,
   }));
 
+  const professions = useSelector(getProfessions());
+  const isLoading = useSelector(getProfessionsLoadingStatus());
   const professionList = professions.map((item) => ({
     label: item.name,
     value: item._id,

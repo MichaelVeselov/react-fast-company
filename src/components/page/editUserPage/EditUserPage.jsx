@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
 import * as yup from 'yup';
 
+import {
+  getQualities,
+  getQualitiesLoadingStatus,
+} from '../../../store/qualities';
+
+import {
+  getProfessions,
+  getProfessionsLoadingStatus,
+} from '../../../store/professions';
+
 import { useProfession } from '../../../hooks/useProfession';
-import { useQuality } from '../../../hooks/useQuality';
 import { useAuth } from '../../../hooks/useAuth';
 
 import TextField from '../../common/form/TextField';
@@ -44,13 +54,16 @@ const EditUserPage = (props) => {
       .min(2, 'The name cannot be shorter than 2 characters'),
   });
 
-  const { professions, isLoading: professionLoading } = useProfession();
+  //const { professions, isLoading: professionLoading } = useProfession();
+  const professions = useSelector(getProfessions());
+  const professionLoading = useSelector(getProfessionsLoadingStatus());
   const professionList = professions.map((profession) => ({
     label: profession.name,
     value: profession._id,
   }));
 
-  const { qualities, isLoading: qualityLoading } = useQuality();
+  const qualities = useSelector(getQualities());
+  const qualityLoading = useSelector(getQualitiesLoadingStatus());
   const qualityList = qualities.map((quality) => ({
     label: quality.name,
     value: quality._id,
@@ -83,7 +96,7 @@ const EditUserPage = (props) => {
     }));
   };
 
-  const getQualities = (arr) => {
+  const getQualityArray = (arr) => {
     const qualityArray = [];
     for (const item of arr) {
       qualityArray.push(item.value);
@@ -99,7 +112,7 @@ const EditUserPage = (props) => {
 
     await updateUser({
       ...data,
-      qualities: getQualities(data.qualities),
+      qualities: getQualityArray(data.qualities),
     });
 
     history.push(`/users/${currentUser._id}`);
