@@ -1,6 +1,7 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { useUser } from '../../../hooks/useUser';
+import { getUserById } from '../../../store/users';
 import { CommentProvider } from '../../../hooks/useComment';
 
 import SingleUserCard from '../../ui/SingleUserCard';
@@ -11,9 +12,7 @@ import Comments from '../../ui/Comments';
 const SingleUserPage = (props) => {
   const { userId } = props;
 
-  const { getUserById } = useUser();
-
-  const user = getUserById(userId);
+  const user = useSelector(getUserById(userId));
 
   const content = <View user={user} />;
 

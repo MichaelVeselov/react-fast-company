@@ -10,8 +10,7 @@ import {
   getProfessionsLoadingStatus,
 } from '../../../store/professions';
 
-import { useUser } from '../../../hooks/useUser';
-import { useAuth } from '../../../hooks/useAuth';
+import { getUsersList, getCurrentUserId } from '../../../store/users';
 
 import SearchStatus from '../../ui/SearchStatus';
 import Search from '../../ui/Search';
@@ -24,9 +23,8 @@ const UserListPage = () => {
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { currentUser } = useAuth();
+  const currentUserId = useSelector(getCurrentUserId());
 
-  //const { professions, isLoading: professionLoading } = useProfession();
   const professions = useSelector(getProfessions());
   const professionLoading = useSelector(getProfessionsLoadingStatus());
 
@@ -34,7 +32,7 @@ const UserListPage = () => {
 
   const pageSize = 6;
 
-  const { users } = useUser();
+  const users = useSelector(getUsersList());
 
   useEffect(() => {
     setCurrentPage(1);
@@ -89,7 +87,7 @@ const UserListPage = () => {
         );
 
     const sortedUsers = orderBy(
-      filteredUsers.filter((user) => user._id !== currentUser._id),
+      filteredUsers.filter((user) => user._id !== currentUserId),
       [sortBy.path, 'name'],
       [sortBy.order]
     );

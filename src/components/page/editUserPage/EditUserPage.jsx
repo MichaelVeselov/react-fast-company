@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
@@ -15,9 +14,7 @@ import {
   getProfessions,
   getProfessionsLoadingStatus,
 } from '../../../store/professions';
-
-import { useProfession } from '../../../hooks/useProfession';
-import { useAuth } from '../../../hooks/useAuth';
+import { getCurrentUserData, updateUser } from '../../../store/users';
 
 import TextField from '../../common/form/TextField';
 import SelectField from '../../common/form/SelectField';
@@ -31,9 +28,9 @@ const EditUserPage = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
 
-  const history = useHistory();
+  const dispatch = useDispatch();
 
-  const { currentUser, updateUser } = useAuth();
+  const currentUser = useSelector(getCurrentUserData());
 
   const validateSchema = yup.object().shape({
     qualities: yup
@@ -54,7 +51,6 @@ const EditUserPage = (props) => {
       .min(2, 'The name cannot be shorter than 2 characters'),
   });
 
-  //const { professions, isLoading: professionLoading } = useProfession();
   const professions = useSelector(getProfessions());
   const professionLoading = useSelector(getProfessionsLoadingStatus());
   const professionList = professions.map((profession) => ({
@@ -104,18 +100,18 @@ const EditUserPage = (props) => {
     return qualityArray;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     const isValid = validate();
     if (!isValid) return;
 
-    await updateUser({
-      ...data,
-      qualities: getQualityArray(data.qualities),
-    });
-
-    history.push(`/users/${currentUser._id}`);
+    dispatch(
+      updateUser({
+        ...data,
+        qualities: getQualityArray(data.qualities),
+      })
+    );
   };
 
   useEffect(() => {

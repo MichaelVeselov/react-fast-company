@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { validator } from '../../utils/validator';
 
@@ -9,8 +8,7 @@ import {
   getProfessions,
   getProfessionsLoadingStatus,
 } from '../../store/professions';
-
-import { useAuth } from '../../hooks/useAuth';
+import { signUp } from '../../store/users';
 
 import TextField from '../common/form/TextField';
 import SelectField from '../common/form/SelectField';
@@ -30,9 +28,7 @@ const RegisterForm = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const history = useHistory();
-
-  const { signUp } = useAuth();
+  const dispatch = useDispatch();
 
   const qualities = useSelector(getQualities());
   const qualityList = qualities.map((item) => ({
@@ -86,7 +82,7 @@ const RegisterForm = () => {
     setData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     const isValid = validate();
@@ -98,12 +94,7 @@ const RegisterForm = () => {
       qualities: data.qualities.map((item) => item.value),
     };
 
-    try {
-      await signUp(newData);
-      history.push('/');
-    } catch (error) {
-      setErrors(error);
-    }
+    dispatch(signUp(newData));
   };
 
   const validate = () => {

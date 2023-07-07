@@ -1,17 +1,21 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { useAuth } from '../../hooks/useAuth';
-import { randomInteger } from '../../utils/randomInteger';
+import { getCurrentUserData } from '../../store/users';
 
 const NavProfile = () => {
   const [isOpen, setOpen] = useState(false);
 
-  const { currentUser } = useAuth();
+  const currentUser = useSelector(getCurrentUserData());
 
   const toggleMenu = () => {
     setOpen((prevState) => !prevState);
   };
+
+  if (!currentUser) {
+    return 'Loading...';
+  }
 
   return (
     <div className='dropdown' onClick={toggleMenu}>

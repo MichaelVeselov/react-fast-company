@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 //import * as yup from 'yup';
 
 import { validator } from '../../utils/validator';
 
-import { useAuth } from '../../hooks/useAuth';
+import { login } from '../../store/users';
 
 import TextField from '../common/form/TextField';
 import CheckBoxField from '../common/form/CheckBoxField';
@@ -15,8 +16,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
-
-  const { logIn } = useAuth();
+  const dispatch = useDispatch();
 
   /*   const validateSchema = yup.object().shape({
     password: yup
@@ -73,12 +73,7 @@ const LoginForm = () => {
 
     const redirect = history.location.state?.from.pathname || '/';
 
-    try {
-      await logIn(data);
-      history.push(redirect);
-    } catch (error) {
-      setErrors(error);
-    }
+    dispatch(login({ payload: data, redirect }));
   };
 
   const validate = () => {
