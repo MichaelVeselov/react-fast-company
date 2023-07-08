@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getUserById } from '../../../store/users';
-import { CommentProvider } from '../../../hooks/useComment';
 
 import SingleUserCard from '../../ui/SingleUserCard';
 import QualityCard from '../../ui/QualityCard';
@@ -32,9 +31,7 @@ const View = ({ user }) => {
         </div>
         <div className='col-md-8'>
           <h3>Comments</h3>
-          <CommentProvider>
-            <Comments />
-          </CommentProvider>
+          <Comments />
         </div>
       </div>
     </div>
