@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //import * as yup from 'yup';
 
 import { validator } from '../../utils/validator';
 
-import { login } from '../../store/users';
+import { getAuthErrors, login } from '../../store/users';
 
 import TextField from '../common/form/TextField';
 import CheckBoxField from '../common/form/CheckBoxField';
@@ -17,6 +17,8 @@ const LoginForm = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const loginError = useSelector(getAuthErrors());
 
   /*   const validateSchema = yup.object().shape({
     password: yup
@@ -115,6 +117,8 @@ const LoginForm = () => {
       <CheckBoxField value={data.stayOn} onChange={handleChange} name='stayOn'>
         Stay on the system?
       </CheckBoxField>
+
+      {loginError && <p className='text-danger'>{loginError}</p>}
 
       <button
         type='submit'

@@ -1,18 +1,48 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { orderBy } from 'lodash';
+import { nanoid } from 'nanoid';
+
+import {
+  getComments,
+  getCommentsLoadingStatus,
+  loadCommentsList,
+  createComment,
+  removeComment,
+} from '../../store/comments';
+import { getCurrentUserId } from '../../store/users';
 
 import CommentsList from '../common/comments/CommentsList';
 import AddCommentForm from '../common/comments/AddCommentForm';
-import { useComment } from '../../hooks/useComment';
 
 const Comments = () => {
-  const { comments, createComment, removeComment } = useComment();
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadCommentsList(userId));
+    // eslint-disable-next-line
+  }, [userId]);
+
+  const isLoading = useSelector(getCommentsLoadingStatus());
+  const comments = useSelector(getComments());
+  const currentUserId = useSelector(getCurrentUserId());
 
   const handleSubmit = (data) => {
-    createComment(data);
+    const comment = {
+      ...data,
+      pageId: userId,
+      created_at: Date.now(),
+      userId: currentUserId,
+      _id: nanoid(),
+    };
+
+    dispatch(createComment(comment));
   };
 
   const handleRemoveComment = (id) => {
-    removeComment(id);
+    dispatch(removeComment(id));
   };
 
   const sortedComments = orderBy(comments, ['created_at'], ['desc']);
@@ -29,10 +59,14 @@ const Comments = () => {
           <div className='card-body '>
             <h2>Comments</h2>
             <hr />
-            <CommentsList
-              comments={sortedComments}
-              onRemove={handleRemoveComment}
-            />
+            {!isLoading ? (
+              <CommentsList
+                comments={sortedComments}
+                onRemove={handleRemoveComment}
+              />
+            ) : (
+              <h2>Loading...</h2>
+            )}
           </div>
         </div>
       )}
